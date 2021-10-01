@@ -1,0 +1,41 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "illusive"
+  namespace: "default"
+  labels:
+    app: "illusive"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "illusive"
+  template:
+    metadata:
+      labels:
+        app: "illusive"
+    spec:
+      containers:
+      - name: "illusive-aviv-1"
+        image: "gcr.io/illusiveaviv/illusive-aviv:latest"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "illusive-hpa-pvb8"
+  namespace: "default"
+  labels:
+    app: "illusive"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "illusive"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80

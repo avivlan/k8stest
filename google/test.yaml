@@ -1,0 +1,46 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "ilusive"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "iilusive"
+  namespace: "ilusive"
+  labels:
+    app: "iilusive"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "iilusive"
+  template:
+    metadata:
+      labels:
+        app: "iilusive"
+    spec:
+      containers:
+      - name: "illusive-aviv-sha256-1"
+        image: "gcr.io/illusiveaviv/illusive-aviv@sha256:5cb1a1326132be63c6306fb9d0c3a2e6028b64ae2da7bc80acdae49163321d6c"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "iilusive-hpa-vrjr"
+  namespace: "ilusive"
+  labels:
+    app: "iilusive"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "iilusive"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
